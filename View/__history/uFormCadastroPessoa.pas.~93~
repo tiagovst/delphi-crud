@@ -26,7 +26,7 @@ uses
 type
   TOperacao = (opNovo, opAlterar, opNavegar);
 
-  TfmPessoa = class(TForm)
+  TPessoas = class(TForm)
     Panel1: TPanel;
     btnFechar: TButton;
     dsPesq: TDataSource;
@@ -69,6 +69,7 @@ type
     oPessoaController : TPessoaController;
     oPessoa : TPessoa;
     sErro : String;
+
     procedure Novo;
     procedure Detalhar;
     procedure Configuracoes;
@@ -81,16 +82,17 @@ type
     procedure Inserir;
     procedure Gravar;
     procedure HabiliatarControllers(aOperacao: TOperacao);
+    procedure LimparCampos;
   end;
 
 var
-  fmPessoa: TfmPessoa;
+  Pessoas: TPessoas;
 
 implementation
 
 {$R *.dfm}
 
-procedure TfmPessoa.Alterar;
+procedure TPessoas.Alterar;
 begin
   try
     with oPessoa do
@@ -116,27 +118,27 @@ begin
     if oPessoaController.Alterar(oPessoa, sErro) = False then
       raise Exception.Create(sErro);
   finally
-    oPessoa := nil;
+    //oPessoa := nil;
   end;
 end;
 
-procedure TfmPessoa.btnAlterarClick(Sender: TObject);
+procedure TPessoas.btnAlterarClick(Sender: TObject);
 begin
   FOperacao := opAlterar;
   HabiliatarControllers(opAlterar);
 end;
 
-procedure TfmPessoa.btnCancelarClick(Sender: TObject);
+procedure TPessoas.btnCancelarClick(Sender: TObject);
 begin
   HabiliatarControllers(opNavegar);
 end;
 
-procedure TfmPessoa.btnDetalharClick(Sender: TObject);
+procedure TPessoas.btnDetalharClick(Sender: TObject);
 begin
   Detalhar;
 end;
 
-procedure TfmPessoa.btnExcluirClick(Sender: TObject);
+procedure TPessoas.btnExcluirClick(Sender: TObject);
 begin
   if oPessoaController.sqlPes.Active then
   begin
@@ -148,34 +150,34 @@ begin
   end;
 end;
 
-procedure TfmPessoa.btnFecharClick(Sender: TObject);
+procedure TPessoas.btnFecharClick(Sender: TObject);
 begin
   close;
 end;
 
-procedure TfmPessoa.btnGravarClick(Sender: TObject);
+procedure TPessoas.btnGravarClick(Sender: TObject);
 begin
   Gravar;
   HabiliatarControllers(opNavegar);
 end;
 
-procedure TfmPessoa.btnListarClick(Sender: TObject);
+procedure TPessoas.btnListarClick(Sender: TObject);
 begin
   Listar;
 end;
 
-procedure TfmPessoa.btnNovoClick(Sender: TObject);
+procedure TPessoas.btnNovoClick(Sender: TObject);
 begin
   Novo;
   HabiliatarControllers(opNovo);
 end;
 
-procedure TfmPessoa.btnPesquisarClick(Sender: TObject);
+procedure TPessoas.btnPesquisarClick(Sender: TObject);
 begin
   PesquisarNome;
 end;
 
-procedure TfmPessoa.CarregarPessoas;
+procedure TPessoas.CarregarPessoas;
 begin
   try
     oPessoaController.CarregarPessoa(oPessoa, oPessoaController.PegarID);
@@ -206,7 +208,7 @@ begin
 
 end;
 
-procedure TfmPessoa.Configuracoes;
+procedure TPessoas.Configuracoes;
 begin
   tbPes.TabVisible := False;
   tbDados.TabVisible := False;
@@ -216,13 +218,13 @@ begin
   DBGrid.DataSource.DataSet := oPessoaController.sqlAll;
 end;
 
-procedure TfmPessoa.DBGridDblClick(Sender: TObject);
+procedure TPessoas.DBGridDblClick(Sender: TObject);
 begin
   oPessoaController.AtivarPesquisa;
   DBGrid.DataSource.DataSet := oPessoaController.sqlAll;
 end;
 
-procedure TfmPessoa.Detalhar;
+procedure TPessoas.Detalhar;
 begin
   CarregarPessoas;
   HabiliatarControllers(opNavegar);
@@ -230,13 +232,14 @@ begin
   pgControl.ActivePage := tbDados;
 end;
 
-procedure TfmPessoa.Excluir(Count: Integer);
+procedure TPessoas.Excluir(Count: Integer);
 begin
   try
     if (Count > 0) then
     begin
       if MessageDlg('Deseja excluir essa pessoa?', mtConfirmation, [mbYes, mbNo], 0) = IDYES then
       begin
+        Pesquisar;
         if oPessoaController.Excluir(oPessoaController.PegarID, sErro) = False then
         begin
           raise Exception.Create(sErro);
@@ -253,18 +256,18 @@ begin
   end;
 end;
 
-procedure TfmPessoa.FormCreate(Sender: TObject);
+procedure TPessoas.FormCreate(Sender: TObject);
 begin
   oPessoa := TPessoa.Create;
   oPessoaController := TPessoaController.Create;
 end;
 
-procedure TfmPessoa.FormShow(Sender: TObject);
+procedure TPessoas.FormShow(Sender: TObject);
 begin
   Configuracoes;
 end;
 
-procedure TfmPessoa.Gravar;
+procedure TPessoas.Gravar;
 begin
   try
     case FOperacao of
@@ -274,11 +277,11 @@ begin
 
     Pesquisar;
   finally
-    oPessoa := nil;
+    //oPessoa := nil;
   end;
 end;
 
-procedure TfmPessoa.HabiliatarControllers(aOperacao: TOperacao);
+procedure TPessoas.HabiliatarControllers(aOperacao: TOperacao);
 begin
   case aOperacao of
     opNovo, opAlterar:
@@ -307,7 +310,7 @@ begin
   end;
 end;
 
-procedure TfmPessoa.Inserir;
+procedure TPessoas.Inserir;
 begin
   try
     with oPessoa do
@@ -336,39 +339,46 @@ begin
     end;
 
   finally
-    oPessoa := nil;
   end;
 
 end;
 
-procedure TfmPessoa.Listar;
+procedure TPessoas.LimparCampos;
 begin
-  pgControl.ActivePage := tbPes;
+  lblEdDocumento.Text := '';
+  lblEdNome.Text := '';
+  lblEdTelefone.Text := '';
+  Codigo.Text := '';
+  cbxTipo.ItemIndex := 0;
 end;
 
-procedure TfmPessoa.Novo;
+procedure TPessoas.Listar;
+begin
+  pgControl.ActivePage := tbPes;
+  LimparCampos;
+end;
+
+procedure TPessoas.Novo;
 begin
   FOperacao := opNovo;
   pgControl.ActivePage := tbDados;
 end;
 
-procedure TfmPessoa.Pesquisar;
+procedure TPessoas.Pesquisar;
 begin
   try
     DBGrid.DataSource.DataSet := oPessoaController.sqlAll;
     oPessoaController.Pesquisar();
   finally
-    oPessoa := nil;
   end;
 end;
 
-procedure TfmPessoa.PesquisarNome;
+procedure TPessoas.PesquisarNome;
 begin
   try
     DBGrid.DataSource.DataSet := oPessoaController.sqlPes;
     oPessoaController.PesquisarNome(lblEdPesquisar.Text);
   finally
-    oPessoa := nil;
   end;
 end;
 

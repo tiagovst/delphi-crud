@@ -118,7 +118,6 @@ begin
     if oPessoaController.Alterar(oPessoa, sErro) = False then
       raise Exception.Create(sErro);
   finally
-    oPessoa := nil;
   end;
 end;
 
@@ -148,6 +147,7 @@ begin
   begin
     Excluir(oPessoaController.RecordCountPesquisa);
   end;
+  Pesquisar;
 end;
 
 procedure TPessoas.btnFecharClick(Sender: TObject);
@@ -251,7 +251,6 @@ begin
     end;
     
   finally
-    oPessoa := nil;
   end;
 end;
 
@@ -276,7 +275,7 @@ begin
 
     Pesquisar;
   finally
-    oPessoa := nil;
+    //oPessoa := nil;
   end;
 end;
 
@@ -338,7 +337,6 @@ begin
     end;
 
   finally
-    oPessoa := nil;
   end;
 
 end;
@@ -370,7 +368,6 @@ begin
     DBGrid.DataSource.DataSet := oPessoaController.sqlAll;
     oPessoaController.Pesquisar();
   finally
-    //oPessoa := nil;
   end;
 end;
 
@@ -380,7 +377,6 @@ begin
     DBGrid.DataSource.DataSet := oPessoaController.sqlPes;
     oPessoaController.PesquisarNome(lblEdPesquisar.Text);
   finally
-    //oPessoa := nil;
   end;
 end;
 

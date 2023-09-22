@@ -102,11 +102,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="View\uFormCadastroPessoa.pas">
-            <Form>fmPessoa</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="View\uFormPrincipal.pas">
-            <Form>fmPrincipal</Form>
+            <Form>Pessoas</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="DAO\uDmConexao.pas">
@@ -121,6 +117,7 @@
         </DCCReference>
         <DCCReference Include="Controller\uPessoaController.pas"/>
         <DCCReference Include="Model\uPessoaModel.pas"/>
+        <None Include="ModelSupport_TestDebug\default.txaPackage"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -149,6 +146,12 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
+                <DeployFile LocalName="ModelSupport_TestDebug\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\TestDebug.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>TestDebug.exe</RemoteName>
@@ -575,6 +578,7 @@
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>
+            <ModelSupport>True</ModelSupport>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>

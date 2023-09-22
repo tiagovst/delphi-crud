@@ -24,8 +24,6 @@ object Pessoas: TPessoas
     Height = 42
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 500
-    ExplicitWidth = 806
     object btnFechar: TButton
       Left = 720
       Top = 8
@@ -44,12 +42,8 @@ object Pessoas: TPessoas
     ActivePage = tbPes
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 806
-    ExplicitHeight = 500
     object tbPes: TTabSheet
       Caption = 'tbPes'
-      ExplicitWidth = 798
-      ExplicitHeight = 472
       object pnBtns: TPanel
         Left = 0
         Top = 438
@@ -59,8 +53,6 @@ object Pessoas: TPessoas
         Color = clSilver
         ParentBackground = False
         TabOrder = 5
-        ExplicitTop = 428
-        ExplicitWidth = 798
       end
       object pnFiltro: TPanel
         Left = 0
@@ -71,7 +63,6 @@ object Pessoas: TPessoas
         Color = clSilver
         ParentBackground = False
         TabOrder = 3
-        ExplicitWidth = 798
         object lblEdPesquisar: TLabeledEdit
           Left = 8
           Top = 24
@@ -159,8 +150,6 @@ object Pessoas: TPessoas
     object tbDados: TTabSheet
       Caption = 'tbDados'
       ImageIndex = 1
-      ExplicitWidth = 798
-      ExplicitHeight = 472
       object Tipo: TLabel
         Left = 16
         Top = 136

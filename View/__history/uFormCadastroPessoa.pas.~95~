@@ -69,6 +69,7 @@ type
     oPessoaController : TPessoaController;
     oPessoa : TPessoa;
     sErro : String;
+
     procedure Novo;
     procedure Detalhar;
     procedure Configuracoes;
@@ -81,6 +82,7 @@ type
     procedure Inserir;
     procedure Gravar;
     procedure HabiliatarControllers(aOperacao: TOperacao);
+    procedure LimparCampos;
   end;
 
 var
@@ -116,7 +118,7 @@ begin
     if oPessoaController.Alterar(oPessoa, sErro) = False then
       raise Exception.Create(sErro);
   finally
-    oPessoa := nil;
+    //oPessoa := nil;
   end;
 end;
 
@@ -146,6 +148,7 @@ begin
   begin
     Excluir(oPessoaController.RecordCountPesquisa);
   end;
+  Pesquisar;
 end;
 
 procedure TPessoas.btnFecharClick(Sender: TObject);
@@ -274,7 +277,7 @@ begin
 
     Pesquisar;
   finally
-    oPessoa := nil;
+    //oPessoa := nil;
   end;
 end;
 
@@ -336,14 +339,23 @@ begin
     end;
 
   finally
-    oPessoa := nil;
   end;
 
+end;
+
+procedure TPessoas.LimparCampos;
+begin
+  lblEdDocumento.Text := '';
+  lblEdNome.Text := '';
+  lblEdTelefone.Text := '';
+  Codigo.Text := '';
+  cbxTipo.ItemIndex := 0;
 end;
 
 procedure TPessoas.Listar;
 begin
   pgControl.ActivePage := tbPes;
+  LimparCampos;
 end;
 
 procedure TPessoas.Novo;
@@ -358,7 +370,6 @@ begin
     DBGrid.DataSource.DataSet := oPessoaController.sqlAll;
     oPessoaController.Pesquisar();
   finally
-    oPessoa := nil;
   end;
 end;
 
@@ -368,7 +379,6 @@ begin
     DBGrid.DataSource.DataSet := oPessoaController.sqlPes;
     oPessoaController.PesquisarNome(lblEdPesquisar.Text);
   finally
-    oPessoa := nil;
   end;
 end;
 

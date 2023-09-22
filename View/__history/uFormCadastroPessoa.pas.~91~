@@ -69,6 +69,7 @@ type
     oPessoaController : TPessoaController;
     oPessoa : TPessoa;
     sErro : String;
+
     procedure Novo;
     procedure Detalhar;
     procedure Configuracoes;
@@ -81,6 +82,7 @@ type
     procedure Inserir;
     procedure Gravar;
     procedure HabiliatarControllers(aOperacao: TOperacao);
+    procedure LimparCampos;
   end;
 
 var
@@ -341,10 +343,19 @@ begin
 
 end;
 
+procedure TPessoas.LimparCampos;
+begin
+  lblEdDocumento.Text := '';
+  lblEdNome.Text := '';
+  lblEdTelefone.Text := '';
+  Codigo.Text := '';
+  cbxTipo.ItemIndex := 0;
+end;
+
 procedure TPessoas.Listar;
 begin
   pgControl.ActivePage := tbPes;
-  oPessoa := nil;
+  LimparCampos;
 end;
 
 procedure TPessoas.Novo;
