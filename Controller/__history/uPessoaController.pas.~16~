@@ -1,0 +1,104 @@
+unit uPessoaController;
+
+interface
+
+uses
+  uPessoaModel, uDmPessoa, System.SysUtils, FireDAC.Comp.Client;
+
+type
+  TPessoaController = class
+  public
+    procedure Pesquisar();
+    procedure PesquisarNome(sNome: string);
+    procedure CarregarPessoa(oPessoa: TPessoa; iCodigo: integer);
+    procedure AtivarPesquisaUnica();
+    procedure AtivarPesquisa();
+
+    function RecordCountPesquisaUnica: Integer;
+    function RecordCountPesquisa: Integer;
+    function PegarID: Integer;
+    function PegarIDUnico: Integer;
+    function sqlAll: TFDQuery;
+    function sqlPes: TFDQuery;
+    function Inserir(oPessoa: TPessoa; var sErro: string): Boolean;
+    function Alterar(oPessoa: TPessoa; var sErro: string): Boolean;
+    function Excluir(iCodigo: integer; sErro: string): Boolean;
+    function GerarNovoID: Integer;
+  end;
+
+implementation
+
+function TPessoaController.Alterar(oPessoa: TPessoa;
+  var sErro: string): Boolean;
+begin
+  Result := DmPessoa.Alterar(oPessoa, sErro);
+end;
+
+procedure TPessoaController.AtivarPesquisa;
+begin
+  if DmPessoa.sqlAll.Active then
+    DmPessoa.sqlAll.Close;
+
+  DmPessoa.sqlAll.Open();
+end;
+
+procedure TPessoaController.AtivarPesquisaUnica;
+begin
+  if DmPessoa.sqlPes.Active then
+    DmPessoa.sqlPes.Close;
+
+  DmPessoa.sqlPes.Open();
+end;
+
+procedure TPessoaController.CarregarPessoa(oPessoa: TPessoa;
+  iCodigo: integer);
+begin
+  DmPessoa.CarregarPessoa(oPessoa, iCodigo);
+end;
+
+function TPessoaController.Excluir(iCodigo: integer; sErro: string): Boolean;
+begin
+  Result := DmPessoa.Excluir(iCodigo, sErro);
+end;
+
+function TPessoaController.GerarNovoID: Integer;
+begin
+  Result := DmPessoa.GerarNovoID;
+end;
+
+function TPessoaController.Inserir(oPessoa: TPessoa;
+  var sErro: string): Boolean;
+begin
+  Result := DmPessoa.Inserir(oPessoa, sErro);
+end;
+
+procedure TPessoaController.PesquisarNome(sNome: string);
+begin
+  DmPessoa.PesquisarNome(sNome);
+end;
+
+function TPessoaController.PegarID: Integer;
+begin
+  DmPessoa.sqlPes.FieldByName('codigo').AsInteger
+end;
+
+function TPessoaController.PegarIDUnico: Integer;
+begin
+  Result := DmPessoa.sqlAll.FieldByName('codigo').AsInteger
+end;
+
+function TPessoaController.RecordCountPesquisa: Integer;
+begin
+  Result := DmPessoa.sqlAll.RecordCount;
+end;
+
+function TPessoaController.RecordCountPesquisaUnica: Integer;
+begin
+  Result := DmPessoa.sqlPes.RecordCount;
+end;
+
+procedure TPessoaController.Pesquisar();
+begin
+  DmPessoa.Pesquisar();
+end;
+end.

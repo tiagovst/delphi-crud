@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/09/15 18:15:22.000.855,=C:\Users\tiago\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/09/15 18:16:17.000.941,E:\Tiago\Programming\Embarcadero\TestDebug.pas=C:\Users\tiago\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/09/15 18:16:17.000.941,E:\Tiago\Programming\Embarcadero\TestDebug.dfm=C:\Users\tiago\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2023/09/15 18:18:27.000.102,E:\Tiago\Programming\Embarcadero\TestDebug.pas=</Transaction>
+    <Transaction>2023/09/15 18:19:02.000.824,E:\Tiago\Programming\Embarcadero\TestDebug\TestDebug.dproj=C:\Users\tiago\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2023/09/15 18:21:48.000.963,=E:\Tiago\Programming\Embarcadero\TestDebug\View\uFormCadastroPessoa.pas</Transaction>
+    <Transaction>2023/09/15 18:21:49.000.001,=E:\Tiago\Programming\Embarcadero\TestDebug\View\uFormPrincipal.pas</Transaction>
+    <Transaction>2023/09/15 18:24:18.000.953,=E:\Tiago\Programming\Embarcadero\TestDebug\DAO\uDmPessoa.pas</Transaction>
+    <Transaction>2023/09/15 18:24:18.000.893,=E:\Tiago\Programming\Embarcadero\TestDebug\DAO\uDmConexao.pas</Transaction>
+    <Transaction>2023/09/15 18:24:25.000.787,=E:\Tiago\Programming\Embarcadero\TestDebug\Controller\uPessoaController.pas</Transaction>
+    <Transaction>2023/09/15 18:24:34.000.791,=E:\Tiago\Programming\Embarcadero\TestDebug\Model\uPessoaModel.pas</Transaction>
+  </Transactions>
+</BorlandProject>

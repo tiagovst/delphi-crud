@@ -1,0 +1,21 @@
+program TestDebug;
+
+uses
+  Vcl.Forms,
+  uFormCadastroPessoa in 'View\uFormCadastroPessoa.pas' {fmPessoa},
+  uFormPrincipal in 'View\uFormPrincipal.pas' {fmPrincipal},
+  uDmConexao in 'DAO\uDmConexao.pas' {DmConexao: TDataModule},
+  uDmPessoa in 'DAO\uDmPessoa.pas' {DmPessoa: TDataModule},
+  uPessoaController in 'Controller\uPessoaController.pas',
+  uPessoaModel in 'Model\uPessoaModel.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfmPrincipal, fmPrincipal);
+  Application.CreateForm(TDmPessoa, DmPessoa);
+  Application.CreateForm(TDmConexao, DmConexao);
+  Application.Run;
+end.

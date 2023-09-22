@@ -1,0 +1,154 @@
+unit uDmPessoa;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Phys.FBDef,
+  FireDAC.Phys, FireDAC.Phys.IBBase, FireDAC.Phys.FB, FireDAC.UI.Intf,
+  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, Datasnap.DBClient, Datasnap.Provider,
+  uPessoaModel;
+
+type
+  TDmPessoa = class(TDataModule)
+    sqlPes: TFDQuery;
+    DriverLink: TFDPhysFBDriverLink;
+    sqlInserir: TFDQuery;
+    sqlAlterar: TFDQuery;
+    sqlExcluir: TFDQuery;
+    sqlPesCODIGO: TIntegerField;
+    sqlPesNOME: TStringField;
+    sqlPesTELEFONE: TStringField;
+  private
+    { Private declarations }
+  public
+    function GerarNovoID: Integer;
+    function Inserir(oPessoa: TPessoa; out sErro: string): Boolean;
+    function Alterar(oPessoa: TPessoa; out sErro: string): Boolean;
+    function Excluir(iCodigo: Integer; out sErro: string): Boolean;
+
+    procedure Pesquisar(sNome: string);
+    procedure CarregarPessoa(oPessoa: TPessoa; iCodigo: Integer);
+
+  end;
+
+var
+  DmPessoa: TDmPessoa;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses uDmConexao;
+
+{$R *.dfm}
+
+{ TDmPessoa }
+
+function TDmPessoa.Alterar(oPessoa: TPessoa; out sErro: string): Boolean;
+begin
+  with sqlAlterar, oPessoa do
+  begin
+    Params[0].AsString := Nome;
+    Params[1].AsString := Tipo;
+    Params[2].AsString := Telefone;
+    Params[3].AsString := Documento;
+    Params[4].AsInteger := ID;
+
+    try
+      ExecSQL();
+      Result := True;
+    except on E: Exception do
+      begin
+        sErro := 'Ocorreu um erro ao tentar persistir: ' + sLineBreak + E.Message;
+        Result := False;
+      end;
+    end;
+  end;
+end;
+
+procedure TDmPessoa.CarregarPessoa(oPessoa: TPessoa; iCodigo: Integer);
+var
+  sql : TFDQuery;
+begin
+  sql := TFDQuery.Create(nil);
+  try
+    sql.Connection := DmConexao.FDCon;
+    sql.SQL.Text := 'select * from pessoa where (codigo = :CODIGO);';
+    sql.Params.ParamByName('CODIGO').AsInteger := iCodigo;
+    sql.Open();
+
+    oPessoa.ID := sql.FieldByName('codigo').AsInteger;
+    oPessoa.Nome := sql.FieldByName('nome').AsString;
+    oPessoa.Tipo := sql.FieldByName('tipo').AsString;
+    oPessoa.Documento := sql.FieldByName('documento').AsString;
+    oPessoa.Telefone := sql.FieldByName('telefone').AsString;
+  finally
+    FreeAndNil(sql);
+  end;
+end;
+
+function TDmPessoa.Excluir(iCodigo: Integer; out sErro: string): Boolean;
+begin
+  with sqlExcluir do
+  begin
+    Params.ParamByName('CODIGO').AsInteger := iCodigo;
+
+    try
+      ExecSQL();
+      Result := True;
+    except on E: Exception do
+      begin
+        sErro := 'Ocorreu um erro ao tentar excluir o elemento: ' + sLineBreak + E.Message;
+        Result := False;
+      end;
+    end;
+  end;
+end;
+
+function TDmPessoa.GerarNovoID: Integer;
+var
+  sql : TFDQuery;
+begin
+  sql := TFDQuery.Create(nil);
+  try
+    sql.Connection := DmConexao.FDCon;
+    sql.SQL.Text := 'select coalesce(max(codigo), 0) + 1 as seq from pessoa';
+    sql.Open();
+    Result := sql.FieldByName('seq').AsInteger;
+  finally
+    FreeAndNil(sql);
+  end;
+end;
+
+function TDmPessoa.Inserir(oPessoa: TPessoa; out sErro: string): Boolean;
+begin
+    try
+      sqlInserir.Params.ParamByName('CODIGO').AsInteger := oPessoa.ID;
+      sqlInserir.Params.ParamByName('NOME').AsString := oPessoa.Nome;
+      sqlInserir.Params.ParamByName('TIPO').AsString := oPessoa.Tipo;
+      sqlInserir.Params.ParamByName('TELEFONE').AsString := oPessoa.Telefone;
+      sqlInserir.Params.ParamByName('DOCUMENTO').AsString := oPessoa.Documento;
+
+      sqlInserir.ExecSQL();
+      Result := True;
+    except on E: Exception do
+      begin
+        sErro := 'Ocorreu um erro ao tentar persistir: ' + sLineBreak + E.Message;
+        Result := False;
+      end;
+    end;
+end;
+
+procedure TDmPessoa.Pesquisar(sNome: string);
+begin
+  if sqlPes.Active then
+    sqlPes.Close;
+
+  sqlPes.Params[0].AsString := '%' + sNome + '%';
+  sqlPes.Open();
+  sqlPes.First;
+end;
+end.

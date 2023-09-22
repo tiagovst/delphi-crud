@@ -1,0 +1,16 @@
+program TestDebug;
+
+uses
+  Vcl.Forms,
+  uFormCadastroPessoa in 'View\uFormCadastroPessoa.pas' {fmPessoa},
+  uFormPrincipal in 'View\uFormPrincipal.pas' {fmPrincipal};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfmPessoa, fmPessoa);
+  Application.CreateForm(TfmPrincipal, fmPrincipal);
+  Application.Run;
+end.

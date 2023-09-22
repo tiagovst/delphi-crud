@@ -1,0 +1,43 @@
+unit uFormPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, uFormCadastroPessoa, uDmPessoa;
+
+type
+  TfmPrincipal = class(TForm)
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+  private
+    FFmPessoa: TfmPessoa;
+    procedure AbrirPessoas;
+  public
+    { Public declarations }
+  end;
+
+var
+  fmPrincipal: TfmPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmPrincipal.AbrirPessoas;
+begin
+  FFmPessoa := TfmPessoa.Create();
+  try
+    fmPessoa.ShowModal;
+  finally
+    FreeAndNil(fmPessoa);
+  end;
+end;
+
+procedure TfmPrincipal.Button1Click(Sender: TObject);
+begin
+  AbrirPessoas;
+end;
+
+
+end.
